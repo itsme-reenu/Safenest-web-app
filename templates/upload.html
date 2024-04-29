@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeNest - Anomaly Detection System</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <style>
+        /* Custom CSS can be added here */
+        /* For demo purpose, let's style the page with some padding */
+        body {
+            padding: 20px;
+            background-color: #f8f9fa; /* Light gray background */
+            text-align: center; /* Center align the content */
+        }
+
+        /* Style for the main header */
+        header {
+            background-color: #343a40; /* Dark gray background */
+            color: #fff; /* White text color */
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        /* Style for the main description */
+        .main-description {
+            color: #343a40; /* Dark gray text color */
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Style for the upload form */
+        .upload-form {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">SafeNest</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto"> <!-- Center align the content -->
+                <h1 class="main-description">SafeNest - A Smart Anomaly Detection and Analytics System for Public Safety</h1>
+                <p>SafeNest is an innovative solution designed to enhance public safety through advanced anomaly detection and analytics. Our system continuously monitors public areas, identifying any unusual activities or potential threats in real-time.</p>
+                <p>With SafeNest, you can trust that your public spaces are under constant surveillance, ensuring peace of mind for residents and visitors alike.</p>
+                <p>Please upload a video file for processing:</p>
+                <form method="post" action="/upload" enctype="multipart/form-data" class="upload-form">
+                    <div class="form-group">
+                        <input type="file" class="form-control-file" id="videoUpload" name="file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+                <p id="processing-message" style="display: none;">Anomaly is being processed. Thank you for your concern.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+        integrity="sha384-AspQPzPhfh4ePz7G5F8+7Xld5NQyXAOoSbjjvpXb9W+rd7/A1YVlkD2uXRV1pC8B"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+        
+    <script>
+        // Show processing message after submitting the form
+        document.querySelector('.upload-form').addEventListener('submit', function() {
+            document.getElementById('processing-message').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
