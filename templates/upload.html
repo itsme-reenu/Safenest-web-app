@@ -12,13 +12,17 @@
         /* For demo purpose, let's style the page with some padding */
         body {
             padding: 20px;
-            background-color: #f8f9fa; /* Light gray background */
+            background-image: url('https://www.shutterstock.com/shutterstock/photos/1838410087/display_1500/stock-photo-detective-board-with-fingerprints-photos-map-and-clues-connected-by-red-string-on-white-brick-wall-1838410087.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
             text-align: center; /* Center align the content */
+            font-family: Arial, sans-serif; /* Change font family */
         }
 
         /* Style for the main header */
         header {
-            background-color: #343a40; /* Dark gray background */
+            background-color: #000; /* Completely black background */
             color: #fff; /* White text color */
             padding-top: 10px;
             padding-bottom: 10px;
@@ -31,17 +35,34 @@
             font-weight: bold;
         }
 
-        /* Style for the upload form */
-        .upload-form {
-            margin-top: 30px;
+        /* Style for the grey box */
+        .content-box {
+            background-color: rgba(255, 255, 255, 0.8); /* Light gray background with transparency */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+        }
+
+        /* Style for the upload section */
+        .upload-section {
+            background-color: rgba(255, 255, 255, 0.8); /* Light gray background with transparency */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+            margin-top: 20px; /* Add some margin to separate from the main content */
+        }
+
+        /* Style for the upload button */
+        .upload-btn {
+            margin-top: 10px; /* Add margin to the top of the button */
         }
     </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-black"> <!-- Completely black navbar -->
             <div class="container">
-                <a class="navbar-brand" href="#">SafeNest</a>
+                <a class="navbar-brand" href="#"> <B>SAFENEST  APPLICATION - DETECT, ALERT AND ANALYSE</B></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -52,36 +73,44 @@
                             <a class="nav-link" href="#">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
+                            <a class="nav-link" href="about.html">About</a> <!-- Link to about page -->
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Contact</a>
+                            <a class="nav-link" href="contact.html">Contact</a> <!-- Link to contact page -->
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-
+<br><br><br>
     <div class="container">
         <div class="row">
-            <div class="col-md-8 mx-auto"> <!-- Center align the content -->
-                <h1 class="main-description">SafeNest - A Smart Anomaly Detection and Analytics System for Public Safety</h1>
-                <p>SafeNest is an innovative solution designed to enhance public safety through advanced anomaly detection and analytics. Our system continuously monitors public areas, identifying any unusual activities or potential threats in real-time.</p>
-                <p>With SafeNest, you can trust that your public spaces are under constant surveillance, ensuring peace of mind for residents and visitors alike.</p>
-                <p>Please upload a video file for processing:</p>
-                <form method="post" action="/upload" enctype="multipart/form-data" class="upload-form">
-                    <div class="form-group">
-                        <input type="file" class="form-control-file" id="videoUpload" name="file">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Upload</button>
-                </form>
-                <p id="processing-message" style="display: none;">Anomaly is being processed. Thank you for your concern.</p>
+            <div class="col-md-6 mx-auto"> <!-- Center align the content -->
+                <div class="content-box"> <!-- Grey box -->
+                    <h1 class="main-description">SafeNest <br> A Smart Anomaly Detection and Analytics System for Public Safety</h1> <br>
+                    <p>SafeNest is an innovative solution designed to enhance public safety through advanced anomaly detection and analytics. 
+                    Our system continuously monitors public areas, identifying any unusual activities or potential threats in real-time.
+                    With SafeNest, you can trust that your public spaces are under constant surveillance, ensuring peace of mind for residents and visitors alike.</p>
+                </div>
+            </div>
+            <div class="col-md-4"> <!-- Right column for upload section -->
+                <div class="upload-section"> <!-- Upload section -->
+                    <h2>Upload a Video</h2>
+                    <form method="post" action="/upload" enctype="multipart/form-data" class="upload-form">
+                        <div class="form-group">
+                            <input type="file" class="form-control-file" id="videoUpload" name="file">
+                        </div>
+                        <button type="submit" class="btn btn-primary upload-btn">Upload</button>
+                    </form>
+                    <p id="processing-message" style="display: none;">Anomaly is being processed. Thank you for your concern.</p>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap JS and jQuery -->
+   
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -92,11 +121,21 @@
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
         
-    <script>
-        // Show processing message after submitting the form
-        document.querySelector('.upload-form').addEventListener('submit', function() {
-            document.getElementById('processing-message').style.display = 'block';
-        });
-    </script>
+        <script>
+            // Show processing message after submitting the form
+            document.querySelector('.upload-form').addEventListener('submit', function() {
+                document.getElementById('processing-message').style.display = 'block';
+            });
+        
+    
+
+            // Function to display an alert with the most common prediction
+            function displayPredictionAlert(prediction) {
+                alert("The anomaly detected is: " + prediction + ". The admin is notified and concerned actions will be taken soon.");
+            }
+
+            displayPredictionAlert("{{ most_common_prediction }}");
+
+        </script>
 </body>
-</html>
+</html>        

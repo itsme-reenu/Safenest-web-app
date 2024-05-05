@@ -38,9 +38,9 @@ def upload_file():
             file.save(video_path)
 
             # Now you can call your backend code with the video path
-            process_video(video_path)
-
-            return redirect(url_for('index'))
+            most_common_prediction = process_video(video_path)
+            # Include the JavaScript code to display the alert within the render_template call
+            return render_template('upload.html', most_common_prediction=most_common_prediction)
 
 # Function to process the uploaded video
 
@@ -53,8 +53,11 @@ def upload_file():
 #     return render_template('anomaly.html', most_common_prediction=most_common_prediction)
 
 def process_video(video_path):
+
+    predictions_with_confidence = []
+    confidence_level = 0.0
     # Load TFLite model
-    interpreter = tf.lite.Interpreter(model_path=r"C:\Users\anurw\Downloads\VIDEOPROCESS\VIDEOPROCESS\model_unquant.tflite")
+    interpreter = tf.lite.Interpreter(model_path=r"C:\Users\anurw\Downloads\Safenest-web-app\model_unquant.tflite")
     interpreter.allocate_tensors()
 
     # Get input and output details
@@ -62,7 +65,7 @@ def process_video(video_path):
     output_details = interpreter.get_output_details()
 
     # Define class names
-    class_names = ['Abuse', 'Arrest', 'Assault', 'Fighting', 'Robbery']
+    class_names = ['Abuse', 'Arrest', 'Assault', 'Fighting', 'Robbery','normal']
 
     # Function to preprocess input frames.
     def preprocess_frame(frame):
@@ -98,13 +101,13 @@ def process_video(video_path):
         # Create the email body
        
         body = f"""
-            Dear Administrator,
-                    Anomaly Alert!!!!
-                    Anomaly Detected: {most_common_prediction}
-                Immediate action is required! Our anomaly detection system has detected a potential anomaly in progress. The safety and security of the public are at risk, and urgent intervention is necessary. Please take immediate action to address this situation and ensure the safety of everyone in the vicinity. This is a critical situation, and prompt action is essential to prevent further harm and ensure public safety.
+Dear Administrator,
+    Anomaly Alert!!!!
+    Anomaly Detected: {most_common_prediction}
+    Immediate action is required! Our anomaly detection system has detected a potential anomaly in progress. The safety and security of the public are at risk, and urgent intervention is necessary. Please take immediate action to address this situation and ensure the safety of everyone in the vicinity. This is a critical situation, and prompt action is essential to prevent further harm and ensure public safety.
 
-            Sincerely,
-            SafeNest Security Team
+    Sincerely,
+    SafeNest Security Team
                 """
         text = MIMEText(body)
         msg.attach(text)
@@ -148,30 +151,46 @@ def process_video(video_path):
         
         # Append the prediction to the list
         predictions.append(pred_class_name)
+        predictions_with_confidence.append((pred_class_name, confidence_level))
+
         
-        # Print the prediction
-        print("Prediction:", pred_class_name)
-        
+        confidence_level = prediction[0][pred_class_index]
+
+    # Print the prediction and its confidence level
+        print(f"Prediction: {pred_class_name}, Confidence: {confidence_level}")
+
         ret, last_frame = cap.read()
         # Display the frame (optional)
         cv2.imshow('Frame', frame)
         if cv2.waitKey(25) & 0xFF == ord('q'):
             break
-    # Find the most frequent prediction
-    most_common_prediction = Counter(predictions).most_common(1)[0][0]
-    print("Most frequent prediction:", most_common_prediction)
+    # Filter predictions to only include those with a confidence level of 0.70 or higher
+    filtered_predictions = [pred for pred, conf in predictions_with_confidence if conf >= 0.70]
 
-    # Call the SendMail function with the last frame as the image attachment
-    SendMail(most_common_prediction, frame_path)
+    # Find the most frequent prediction among the filtered predictions
+    if filtered_predictions:
+        most_common_prediction = Counter(filtered_predictions).most_common(1)[0][0]
+    else:
+        most_common_prediction = 'normal' # Set to 'normal' if no prediction matches the criteria
+
+    print("Most frequent prediction with confidence >= 0.70:", most_common_prediction)
+
+    if most_common_prediction != "normal":
+    # SendMail function to send an email
+        SendMail(most_common_prediction, frame_path)
+
+    # Call the displayPredictionAlert JavaScript function with the most common prediction
+        print("<script>displayPredictionAlert('{}');</script>".format(most_common_prediction), flush=True)
 
     # Release the video capture object and close OpenCV windows
     cap.release()
     cv2.destroyAllWindows()
+    return most_common_prediction
 
+    
 def play_beep():
     # Load the beep sound file
-    beep_sound = pygame.mixer.Sound("C:\\Users\\anurw\\Downloads\\VIDEOPROCESS\\VIDEOPROCESS\\beep.mp3")
-    # Play the beep sound
+    beep_sound = pygame.mixer.Sound(r"C:\Users\anurw\Downloads\Safenest-web-app\beep.mp3")    # Play the beep sound
     beep_sound.play()
 
 if __name__ == '__main__':
